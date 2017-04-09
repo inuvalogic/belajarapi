@@ -2,8 +2,6 @@
 
 namespace Api\Core;
 
-use Api\Core\Header;
-
 class Response
 {
 	public static function sent($code = 200, $data = array())

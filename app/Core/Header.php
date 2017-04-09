@@ -21,6 +21,7 @@ class Header
             case 404: $text = 'Not Found'; break;
             case 405: $text = 'Method Not Allowed'; break;
             case 501: $text = 'Not Implemented'; break;
+            case 503: $text = 'Service Unavailable'; break;
             default:
                 $text = 'Unknown http status code ' . $code;
                 break;

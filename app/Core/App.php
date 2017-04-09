@@ -2,10 +2,14 @@
 
 namespace Api\Core;
 
-use Api\Core\Response;
-
 class App
 {
+	public function __construct()
+	{
+		$db = new Database;
+		$db->init();
+	}
+
 	public function init()
 	{
 		if (!isset($_GET['url']))
@@ -41,6 +45,23 @@ class App
 					}
 				}
 			}
+		}
+	}
+
+	public function uri_segment($index = 0)
+	{
+		if (isset($_GET['url']))
+		{
+			$url = filter_var($_GET['url'], FILTER_SANITIZE_URL);
+			$url = trim($url, '/');
+			$url = explode('/', $url);
+			if (isset($url[$index])){
+				return $url[$index];
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-$url = 'http://localhost/api/public/artikel';
+$url = 'http://localhost/api/public/artikel/1';
 
 $ch = curl_init($url);
 
@@ -17,11 +17,11 @@ curl_close($ch);
 if ($status_code==200)
 {
 	$data = json_decode($result);
+
+	?>
 	
-	foreach ($data->data_artikel as $row) {
-		?>
-		<h1><?php echo $row->judul; ?></h1>
-		<p><?php echo $row->isi; ?></p>
-		<?php
-	}
+	<h1><?php echo $data->data_artikel->judul; ?></h1>
+	<p><?php echo $data->data_artikel->isi; ?></p>
+	
+	<?php
 }
