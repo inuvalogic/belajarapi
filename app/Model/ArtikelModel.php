@@ -44,4 +44,35 @@ class ArtikelModel
             return false;
         }
     }
+
+    public static function update($data)
+    {
+        try
+        {
+            $sql_update = "UPDATE `".self::TABLE_NAME."` SET `judul` = ?, `isi` = ? WHERE `id` = ?";
+            $q = Database::$pdo->prepare($sql_update);
+            $q->bindValue(1, $data['judul'], PDO::PARAM_STR);
+            $q->bindValue(2, $data['isi'], PDO::PARAM_STR);
+            $q->bindValue(3, $data['id'], PDO::PARAM_INT);
+            $q->execute();
+            return true;
+        } catch(\PDOException $e){
+            return false;
+        }
+    }
+
+    
+    public static function delete($id)
+    {
+        try
+        {
+            $id = filter_var($id, FILTER_VALIDATE_INT);
+            $sql = "DELETE FROM `".self::TABLE_NAME."` WHERE `id` = ?";
+            $q = Database::$pdo->prepare($sql);
+            $q->execute(array($id));
+            return true;
+        } catch(\PDOException $e){
+            return false;
+        }
+    }
 }

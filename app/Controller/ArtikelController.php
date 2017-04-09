@@ -76,9 +76,27 @@ class ArtikelController extends \Api\Core\App
 
     public function post()
     {
+        if (!isset($_POST['judul'])){
+            Response::sent(400);
+            exit;
+        }
+
+        if (!isset($_POST['isi'])){
+            Response::sent(400);
+            exit;
+        }
+
+        if (empty($_POST['judul']) && empty($_POST['isi'])){
+            Response::sent(400);
+            exit;            
+        }
+        
+        $judul = filter_var($_POST['judul'], FILTER_SANITIZE_STRING);
+        $isi   = filter_var($_POST['isi'], FILTER_SANITIZE_STRING);
+
         $data = array(
-            'judul' => filter_var($_POST['judul'], FILTER_SANITIZE_STRING),
-            'isi' => filter_var($_POST['isi'], FILTER_SANITIZE_STRING),
+            'judul' => $judul,
+            'isi' => $isi,
         );
 
         $id = ArtikelModel::insert($data);
@@ -90,12 +108,71 @@ class ArtikelController extends \Api\Core\App
         }
     }
 
-    private function halo($method)
-    {
-        $data = array(
-            'message' => 'ini method ' . $method
-        );
+    public function put()
+    {        
+        $params = $this->get_stream_data();
+        
+        if (!isset($params['judul'])){
+            Response::sent(400);
+            exit;
+        }
 
-        return $data;
+        if (!isset($params['isi'])){
+            Response::sent(400);
+            exit;
+        }
+
+        $id = $this->uri_segment(1);
+
+        if ($id!=false)
+        {
+            $row = ArtikelModel::one($id);
+
+            if ($row!=false)
+            {
+                $data = array(
+                    'id' => $row['id'],
+                    'judul' => $params['judul'],
+                    'isi' => $params['isi'],
+                );
+
+                $update = ArtikelModel::update($data);
+
+                if ($update!=false){
+                    Response::sent(200, array('status' => true));
+                } else {
+                    Response::sent(400);
+                }
+            } else {
+                Response::sent(400);
+            }
+        } else {
+            Response::sent(400);
+        }
+    }
+    
+    public function delete()
+    {
+        $id = $this->uri_segment(1);
+
+        if ($id!=false)
+        {
+            $row = ArtikelModel::one($id);
+
+            if ($row!=false)
+            {
+                $delete = ArtikelModel::delete($row['id']);
+
+                if ($delete!=false){
+                    Response::sent(200, array('status' => true));
+                } else {
+                    Response::sent(400);
+                }
+            } else {
+                Response::sent(400);
+            }
+        } else {
+            Response::sent(400);
+        }
     }
 }

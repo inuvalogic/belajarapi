@@ -64,4 +64,10 @@ class App
 			return false;
 		}
 	}
+
+	public function get_stream_data()
+	{
+		parse_str(file_get_contents("php://input"), $post_vars);
+		return $post_vars;
+	}
 }
