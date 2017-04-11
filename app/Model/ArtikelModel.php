@@ -29,17 +29,21 @@ class ArtikelModel
         return $row;
     }
 
-    public static function insert($data)
+    public static function insert($param_data)
     {
         try
         {
-            $sql_insert = "INSERT INTO `" . self::TABLE_NAME . "` (`judul`, `isi`) VALUES (?,?)";
+            $sql_insert = "INSERT INTO `" . self::TABLE_NAME . "` (`judul`, `isi`, `gambar`, `judul_gambar`) VALUES (?,?,?,?)";
             $q = Database::$pdo->prepare($sql_insert);
-            $q->bindValue(1, $data['judul'], PDO::PARAM_STR);
-            $q->bindValue(2, $data['isi'], PDO::PARAM_STR);
+            $q->bindValue(1, $param_data['judul'], PDO::PARAM_STR);
+            $q->bindValue(2, $param_data['isi'], PDO::PARAM_STR);
+            $q->bindValue(3, $param_data['gambar'], PDO::PARAM_STR);
+            $q->bindValue(4, $param_data['judul_gambar'], PDO::PARAM_STR);
             $q->execute();
+            
             $id = Database::$pdo->lastInsertId();
             return $id;
+            
         } catch(\PDOException $e){
             return false;
         }

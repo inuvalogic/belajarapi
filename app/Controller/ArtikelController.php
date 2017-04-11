@@ -93,13 +93,17 @@ class ArtikelController extends \Api\Core\App
         
         $judul = filter_var($_POST['judul'], FILTER_SANITIZE_STRING);
         $isi   = filter_var($_POST['isi'], FILTER_SANITIZE_STRING);
+        $gambar = filter_var($_POST['gambar'], FILTER_SANITIZE_STRING);
+        $judul_gambar  = filter_var($_POST['judul_gambar'], FILTER_SANITIZE_STRING);
 
-        $data = array(
+        $param_data = array(
             'judul' => $judul,
             'isi' => $isi,
+            'gambar' => $gambar,
+            'judul_gambar' => $judul_gambar,
         );
 
-        $id = ArtikelModel::insert($data);
+        $id = ArtikelModel::insert($param_data);
 
         if ($id!=false){
             Response::sent(200, array('id' => $id));
